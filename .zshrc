@@ -108,11 +108,14 @@ source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 alias vi="nvim"
 alias vim="nvim"
+alias ls="eza --long --color=always --icons=always --no-user"
+alias cd="z"
 
 #autoload -U +X bashcompinit && bashcompinit
 autoload -Uz compinit && compinit -C
 complete -o nospace -C /opt/homebrew/bin/terraform terraform
 eval "$(starship init zsh)"
+eval "$(zoxide init zsh)"
 neofetch
 
 export PATH=$PATH:/Users/bklo/.spicetify
