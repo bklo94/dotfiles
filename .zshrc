@@ -6,6 +6,10 @@ export ZSH="$HOME/.oh-my-zsh"
 export GPG_TTY=$(tty)
 unsetopt AUTO_LIST
 
+
+HISTFILE=~/.zsh_history
+HISTSIZE=999999999
+SAVEHIST=$HISTSIZE
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
