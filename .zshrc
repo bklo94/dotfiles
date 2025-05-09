@@ -114,6 +114,7 @@ alias vi="nvim"
 alias vim="nvim"
 alias ls="eza --long --color=always --icons=always --no-user"
 alias cd="z"
+alias cat="bat"
 
 #autoload -U +X bashcompinit && bashcompinit
 autoload -Uz compinit && compinit -C
