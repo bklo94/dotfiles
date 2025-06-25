@@ -6,7 +6,6 @@ export ZSH="$HOME/.oh-my-zsh"
 export GPG_TTY=$(tty)
 unsetopt AUTO_LIST
 
-
 HISTFILE=~/.zsh_history
 HISTSIZE=999999999
 SAVEHIST=$HISTSIZE
@@ -104,7 +103,7 @@ source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 # the $ZSH_CUSTOM folder, with .zsh extension. Examples:
 # - $ZSH_CUSTOM/aliases.zsh
 # - $ZSH_CUSTOM/macos.zsh
-# For a full list of active aliases, run `alias`.
+# For a full list of active aliases, run `alias`
 #
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
@@ -118,6 +117,9 @@ alias cat="bat"
 
 #autoload -U +X bashcompinit && bashcompinit
 autoload -Uz compinit && compinit -C
+source <(kubectl completion zsh)
+alias kubectl=kubecolor
+compdef kubecolor=kubectl
 complete -o nospace -C /opt/homebrew/bin/terraform terraform
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
