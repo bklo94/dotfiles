@@ -6,3 +6,24 @@ credentials*
 # transient editor/app backups
 *.backup-*
 *~
+*.bak
+
+# app state / caches / binaries must never enter the repo
+# (2026-09-04: WebCord+spotify app state had to be purged from history — don't repeat)
+*.log
+*.zip
+*.exe
+*.sqlite*
+*.db
+*cookie*
+Cache/
+Code Cache/
+GPUCache/
+
+# live claude settings contain API tokens — only the .example ships
+Linux/claude/.claude/settings.json
+# ssh: only config/allowed_signers/*.pub ever ship; never keys or host state
+Linux/ssh/.ssh/id_*
+!Linux/ssh/.ssh/*.pub
+Linux/ssh/.ssh/known_hosts*
+Linux/ssh/.ssh/authorized_keys*
