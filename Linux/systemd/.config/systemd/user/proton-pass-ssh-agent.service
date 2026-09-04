@@ -1,0 +1,17 @@
+[Unit]
+Description=Proton Pass SSH agent (serves SSH keys from Proton Pass vaults)
+
+[Service]
+# pass-agent wraps pass-cli with the scoped 'claude-code' agent session, which
+# auto re-logins via its PAT — so the daemon survives /tmp session cleanup and
+# reboots without interaction. It serves SSH keys from the vaults granted to it.
+# `ssh-agent start` runs in the foreground; systemd is the daemonizer (logs in
+# the journal: journalctl --user -u proton-pass-ssh-agent).
+# systemd user units get a minimal PATH; pass-cli lives in ~/.local/bin.
+Environment="PATH=%h/.local/bin:/usr/local/bin:/usr/bin:/bin"
+ExecStart=%h/.local/bin/pass-agent ssh-agent start --socket-path %h/.ssh/proton-pass-agent.sock --refresh-interval 30
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
