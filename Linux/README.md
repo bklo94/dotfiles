@@ -208,10 +208,15 @@ systemctl --user enable --now proton-pass-ssh-agent.service
 - `~/.secrets.zsh` — sourced by `.zshrc` (env credentials)
 - `~/.claude/settings.json` — copy from `claude/.claude/settings.json.example`
   and fill `env` values (API tokens). The real file is gitignored.
+  **Full version in Proton Pass** (Personal vault): item `claude-settings.json (bklo workstation)`
 - `~/.ssh/` keys + `config` — `ssh/.ssh/config.example` is a template (this repo
-  is public; keep real host entries local). SSH keys live in Proton Pass as
+  is public; keep real host entries local). **Real config in Proton Pass**
+  (Personal vault): item `ssh-config (bklo workstation)` — restore with
+  `pass-cli item view --vault-name Personal --item-title 'ssh-config (bklo workstation)' --field note > ~/.ssh/config`. SSH keys live in Proton Pass as
   SSH-key items; the systemd agent serves them and `.zshrc` points
-  `SSH_AUTH_SOCK` at it, so `~/.ssh` private keys are optional (keep `.pub`s)
+  `SSH_AUTH_SOCK` at it, so `~/.ssh` private keys are optional (keep `.pub`s).
+  Add new keys with the `pp-ssh-add <key>` zsh function (imports to the
+  Homelab vault and restarts the agent; tested by `tests/pp-ssh-add-test.zsh`)
 - `~/.config/pass-cli/agent-claude-code.env` — PAT session env for the
   `claude-code` pass-cli agent (chmod 600, never in repo); created via
   `pass-cli agent create`, wrapped by `bin/.local/bin/pass-agent`
