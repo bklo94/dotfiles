@@ -1,0 +1,8 @@
+# secrets never enter the repo (zshrc sources ~/.secrets.zsh from outside)
+.secrets*
+*.env
+*-token*
+credentials*
+# transient editor/app backups
+*.backup-*
+*~

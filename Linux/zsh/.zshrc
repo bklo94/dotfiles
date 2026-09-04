@@ -1,5 +1,5 @@
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:/home/bklo/.bun/bin:$PATH
 if [ "$TMUX" = "" ]; then tmux; fi
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -96,6 +96,10 @@ source $ZSH/oh-my-zsh.sh
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
+if [ -z "$DISABLE_ZOXIDE" ]; then
+    eval "$(zoxide init --cmd cd zsh)"
+fi
+
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
 #   export EDITOR='vim'
@@ -131,7 +135,9 @@ alias ff="fastfetch"
 alias sed="sd"
 alias man="tldr"
 alias diff="difft"
-
+alias tt="smassh"
+alias talswitcher="talswitcher context --talosconfig-dir ~/.talos/configs/"
+alias ccusage="bunx better-ccusage"
 
 #autoload -U +X bashcompinit && bashcompinit
 autoload -Uz compinit && compinit -C
@@ -141,3 +147,15 @@ compdef kubecolor=kubectl
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 #fastfetch
+
+# opencode
+export PATH=/home/bklo/.opencode/bin:$PATH
+
+# bun completions
+[ -s "/home/bklo/.bun/_bun" ] && source "/home/bklo/.bun/_bun"
+
+# Added by sonarqube-cli installer
+export PATH="$HOME/.local/share/sonarqube-cli/bin:$PATH"
+
+# Source secrets (env-based credentials, e.g. SonarQube CLI token)
+[ -f "$HOME/.secrets.zsh" ] && source "$HOME/.secrets.zsh"

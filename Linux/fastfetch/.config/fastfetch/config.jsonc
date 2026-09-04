@@ -4,7 +4,7 @@
          "source": "auto",
          "color": {
              "1": "blue",
-             "2": "green"
+             "2": "cyan"
          }
      },
     "display": {
@@ -29,11 +29,6 @@
         {
             "type": "memory",
             "key": "├─󰑭",
-            "keyColor": "cyan"
-        },
-        {
-            "type": "swap",
-            "key": "├─󰓡",
             "keyColor": "cyan"
         },
         {

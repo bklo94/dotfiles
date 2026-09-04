@@ -1,2 +1,2 @@
-theme = nord
+theme = Nord
 command = /usr/bin/zsh --login --interactive
