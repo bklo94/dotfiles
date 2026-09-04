@@ -159,3 +159,7 @@ export PATH="$HOME/.local/share/sonarqube-cli/bin:$PATH"
 
 # Source secrets (env-based credentials, e.g. SonarQube CLI token)
 [ -f "$HOME/.secrets.zsh" ] && source "$HOME/.secrets.zsh"
+
+# Proton Pass SSH agent — serves SSH keys from the Homelab vault
+# (daemon managed by systemd user unit: proton-pass-ssh-agent.service)
+export SSH_AUTH_SOCK="$HOME/.ssh/proton-pass-agent.sock"

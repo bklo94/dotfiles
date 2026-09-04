@@ -1,6 +1,7 @@
 STOW_DIR := Linux
 TARGET   := $(HOME)
-PKGS     := $(notdir $(wildcard $(STOW_DIR)/*))
+# directories only — trailing-slash wildcard skips README.md, packages-*.txt
+PKGS     := $(notdir $(patsubst %/,%,$(wildcard $(STOW_DIR)/*/)))
 
 # Deploy all Linux packages: symlink ~/.config/<app> and ~/.zshrc into this repo
 stow:
@@ -16,4 +17,9 @@ restow:
 list:
 	@echo $(PKGS) | tr ' ' '\n'
 
-.PHONY: stow unstow restow list
+# Regenerate the pacman package manifests referenced by Linux/README.md
+packages:
+	pacman -Qqen > $(STOW_DIR)/packages-official.txt
+	pacman -Qqem > $(STOW_DIR)/packages-aur.txt
+
+.PHONY: stow unstow restow list packages
