@@ -220,6 +220,10 @@ systemctl --user enable --now proton-pass-ssh-agent.service
 - `~/.config/pass-cli/agent-claude-code.env` — PAT session env for the
   `claude-code` pass-cli agent (chmod 600, never in repo); created via
   `pass-cli agent create`, wrapped by `bin/.local/bin/pass-agent`
+- `~/.claude.json` (Claude Code app state) — `mcpServers` template at
+  `claude/.claude/mcp-servers.example.json`; the z.ai key lives in
+  `~/.secrets.zsh` and is wired in via `${Z_AI_API_KEY}` expansion
+  (both `env` and the `Authorization: Bearer` header)
 - GPG: import signing key `6D872D6B1FF171D5CD16B634BAED9238E5F45E7C`
   (`.gitconfig` signs all commits/tags)
 - Git credentials: first HTTPS push prompts once (`credential.helper=store`)
@@ -233,7 +237,7 @@ systemctl --user enable --now proton-pass-ssh-agent.service
 | hypr | Hyprland **Lua** config (`hyprland.lua`), windowrules, hyprpaper |
 | zsh | `~/.zshrc` (oh-my-zsh + plugins above) |
 | tmux | `~/.tmux.conf` (tpm) |
-| claude | `~/.claude/` — CLAUDE.md, agents, skills, hooks, settings template |
+| claude | `~/.claude/` — CLAUDE.md, agents, skills, hooks, settings + MCP-server templates |
 | ssh | `~/.ssh/allowed_signers` + `config.example` (template only) |
 | systemd | `~/.config/systemd/user/` — Proton Pass SSH agent unit |
 | bin | `~/.local/bin/pass-agent` — scoped pass-cli wrapper for agents |
