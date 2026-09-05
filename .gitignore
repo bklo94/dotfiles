@@ -21,7 +21,10 @@ Code Cache/
 GPUCache/
 
 # live claude settings contain API tokens — only the .example ships
-Linux/claude/.claude/settings.json
+# (repo-level too — the global ignore is stowed from here, so a fresh
+# clone pre-stow must not be able to `git add .` these)
+**/.claude/settings.json
+**/.claude/settings.local.json
 # ssh: only config/allowed_signers/*.pub ever ship; never keys or host state
 Linux/ssh/.ssh/id_*
 !Linux/ssh/.ssh/*.pub
