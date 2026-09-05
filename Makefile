@@ -5,8 +5,10 @@ else
 STOW_DIR := Linux
 endif
 TARGET   := $(HOME)
+# state-heavy packages kept as real dirs (not symlinked) on this machine
+EXCLUDE  := qbittorrent spicetify
 # directories only — trailing-slash wildcard skips README.md, packages-*.txt
-PKGS     := $(notdir $(patsubst %/,%,$(wildcard $(STOW_DIR)/*/)))
+PKGS     := $(filter-out $(EXCLUDE),$(notdir $(patsubst %/,%,$(wildcard $(STOW_DIR)/*/))))
 
 # Deploy the current platform's packages: symlink ~/.config/<app> and dotfiles into this repo
 stow:
