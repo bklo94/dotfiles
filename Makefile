@@ -1,9 +1,14 @@
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+STOW_DIR := Mac
+else
 STOW_DIR := Linux
+endif
 TARGET   := $(HOME)
 # directories only — trailing-slash wildcard skips README.md, packages-*.txt
 PKGS     := $(notdir $(patsubst %/,%,$(wildcard $(STOW_DIR)/*/)))
 
-# Deploy all Linux packages: symlink ~/.config/<app> and ~/.zshrc into this repo
+# Deploy the current platform's packages: symlink ~/.config/<app> and dotfiles into this repo
 stow:
 	stow -d $(STOW_DIR) -t $(TARGET) $(PKGS)
 
@@ -17,9 +22,9 @@ restow:
 list:
 	@echo $(PKGS) | tr ' ' '\n'
 
-# Regenerate the pacman package manifests referenced by Linux/README.md
+# Regenerate the pacman package manifests referenced by Linux/README.md (Linux only)
 packages:
-	pacman -Qqen > $(STOW_DIR)/packages-official.txt
-	pacman -Qqem > $(STOW_DIR)/packages-aur.txt
+	pacman -Qqen > Linux/packages-official.txt
+	pacman -Qqem > Linux/packages-aur.txt
 
 .PHONY: stow unstow restow list packages
