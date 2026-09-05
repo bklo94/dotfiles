@@ -11,6 +11,7 @@ $terraform\
 $cmd_duration\
 $line_break\
 $python\
+$status\
 $character"""
 
 [kubernetes]
@@ -23,7 +24,7 @@ context_pattern = "^production$"
 context_alias = "production"
 style = "blue"
 
-[container] 
+[container]
 format = '[$symbol \[$name\]]($style) '
 
 [terraform]
@@ -37,6 +38,10 @@ style = "blue"
 success_symbol = "[❯](purple)"
 error_symbol = "[❯](red)"
 vimcmd_symbol = "[❮](green)"
+
+[status]
+disabled = false
+format = '[\[$status\]](red) '
 
 [git_branch]
 format = "[$branch]($style)"

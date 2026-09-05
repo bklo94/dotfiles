@@ -27,3 +27,4 @@ Linux/ssh/.ssh/id_*
 !Linux/ssh/.ssh/*.pub
 Linux/ssh/.ssh/known_hosts*
 Linux/ssh/.ssh/authorized_keys*
+Mac/claude/.claude/settings.json
