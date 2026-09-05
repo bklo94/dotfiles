@@ -1,0 +1,19 @@
+[init]
+	defaultBranch = main
+[fetch]
+	prune = true
+[user]
+	signingkey = 6D872D6B1FF171D5CD16B634BAED9238E5F45E7C
+	email = gitea@brandonkitlo.com
+	name = bklo
+[commit]
+	gpgSign = true
+[tag]
+	gpgSign = true
+	forceSignAnnotated = true
+[gpg]
+	program = gpg
+[gpg "ssh"]
+	allowedSignersFile = /home/bklo/.ssh/allowed_signers
+[credential]
+	helper = store
