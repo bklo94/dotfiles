@@ -141,9 +141,11 @@ alias ccusage="bunx better-ccusage"
 
 #autoload -U +X bashcompinit && bashcompinit
 autoload -Uz compinit && compinit -C
-source <(kubectl completion zsh)
-alias kubectl=kubecolor
-compdef kubecolor=kubectl
+if command -v kubectl >/dev/null 2>&1; then
+  source <(kubectl completion zsh)
+  alias kubectl=kubecolor
+  compdef kubecolor=kubectl
+fi
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 #fastfetch
@@ -160,27 +162,6 @@ export PATH="$HOME/.local/share/sonarqube-cli/bin:$PATH"
 # Source secrets (env-based credentials, e.g. SonarQube CLI token)
 [ -f "$HOME/.secrets.zsh" ] && source "$HOME/.secrets.zsh"
 
-# Proton Pass SSH agent — serves SSH keys from the Homelab vault
-# (daemon managed by systemd user unit: proton-pass-ssh-agent.service)
-export SSH_AUTH_SOCK="$HOME/.ssh/proton-pass-agent.sock"
-
-# Durable ssh-add: import a key into Proton Pass (default: Homelab vault).
-# The daemon loads its key set at startup (--refresh-interval does NOT pick up
-# new items), so this restarts the unit after importing — keys serve again in
-# ~15s. (ssh-add itself can't upload to the Proton agent; it only lists with -l.)
-pp-ssh-add() {
-  emulate -L zsh
-  local key="${1-}" vault="${2:-Homelab}"
-  key="${key%.pub}"
-  if [[ -z "$key" ]]; then
-    echo "usage: pp-ssh-add <private-key-path> [vault-name]" >&2
-    return 2
-  fi
-  if [[ ! -f "$key" ]]; then
-    echo "pp-ssh-add: no such file: $key" >&2
-    return 1
-  fi
-  pass-cli item create ssh-key import --from-private-key "$key" --title "$(basename "$key")" --vault-name "$vault" \
-    && systemctl --user restart proton-pass-ssh-agent.service \
-    && echo "imported to '$vault', agent restarting — ready in ~15s, then: ssh-add -l"
-}
+# Machine-local overrides live in ~/.zshrc.local (not stowed, one per machine —
+# e.g. the Proton Pass agent on the workstation, tweaks on the bastion).
+[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
