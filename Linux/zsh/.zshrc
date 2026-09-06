@@ -146,8 +146,13 @@ alias ccusage="bunx better-ccusage"
 autoload -Uz compinit && compinit -C
 if command -v kubectl >/dev/null 2>&1; then
   source <(kubectl completion zsh)
-  alias kubectl=kubecolor
-  compdef kubecolor=kubectl
+  # guard on the WRAPPER, not the wrapped tool: without this, machines missing
+  # kubecolor (the bastions, 2026-09-06) break `kubectl` entirely with
+  # "command not found: kubecolor".
+  if command -v kubecolor >/dev/null 2>&1; then
+    alias kubectl=kubecolor
+    compdef kubecolor=kubectl
+  fi
 fi
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
