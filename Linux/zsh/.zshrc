@@ -1,6 +1,9 @@
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:/home/bklo/.bun/bin:$PATH
-if [ "$TMUX" = "" ]; then tmux; fi
+# exec (not a foreground child): without it the login shell merely parks here
+# while tmux runs — exiting the pane returns to a half-initialized outer zsh
+# and logout needs a second `exit` (bastion double-logout, 2026-09-06).
+if [ "$TMUX" = "" ] && command -v tmux >/dev/null 2>&1; then exec tmux; fi
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 export GPG_TTY=$(tty)
