@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# pass-agent — run pass-cli as the scoped 'claude-code' Proton Pass agent.
+#
+# - PAT + isolated session dir live in ~/.config/pass-cli/agent-claude-code.env (chmod 600)
+# - Keeps the agent session separate from bklo's personal pass-cli session
+# - Auto re-authenticates when the /tmp session is gone (e.g. after reboot)
+# - Enforces PROTON_PASS_AGENT_REASON on audited commands (item view/create/
+#   update/trash/untrash, vault update) per Proton's agent policy
+#
+# Vault access is granted/revoked with your PERSONAL session, not this wrapper:
+#   pass-cli agent access grant claude-code --vault-name <vault> --role viewer|editor|manager
+#   pass-cli agent access revoke claude-code --vault-name <vault>
+set -euo pipefail
+
+ENV_FILE="${PROTON_PASS_AGENT_ENV_FILE:-$HOME/.config/pass-cli/agent-claude-code.env}"
+if [[ ! -r "$ENV_FILE" ]]; then
+    echo "pass-agent: cannot read $ENV_FILE — agent credentials missing." >&2
+    echo "Recreate with: pass-cli agent create --expiration 1y claude-code (personal session)" >&2
+    exit 1
+fi
+# shellcheck source=/dev/null
+source "$ENV_FILE"
+export PROTON_PASS_PERSONAL_ACCESS_TOKEN PROTON_PASS_SESSION_DIR
+mkdir -p "$PROTON_PASS_SESSION_DIR"
+
+# Audited commands require an access reason
+case "${1:-} ${2:-}" in
+    "item view"|"item create"|"item update"|"item trash"|"item untrash"|"vault update")
+        if [[ -z "${PROTON_PASS_AGENT_REASON:-}" ]]; then
+            echo "pass-agent: PROTON_PASS_AGENT_REASON is required for '$1 $2' (audited vault access)." >&2
+            echo "usage: PROTON_PASS_AGENT_REASON=\"why this is needed\" pass-agent $*" >&2
+            exit 2
+        fi
+        ;;
+esac
+
+if ! pass-cli info >/dev/null 2>&1; then
+    # Session missing or expired — clear stale state and re-login with the PAT
+    pass-cli logout --force >/dev/null 2>&1 || true
+    if ! pass-cli login >/dev/null 2>&1; then
+        echo "pass-agent: login failed — PAT may be expired (created 2026-09-04, 1y) or revoked." >&2
+        echo "Renew from your personal session, then update $ENV_FILE:" >&2
+        echo "  pass-cli agent renew --expiration 1y claude-code" >&2
+        exit 1
+    fi
+fi
+
+exec pass-cli "$@"

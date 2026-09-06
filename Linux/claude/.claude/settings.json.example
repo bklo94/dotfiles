@@ -1,0 +1,109 @@
+{
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "<FILL_ME>",
+    "ANTHROPIC_BASE_URL": "<FILL_ME>",
+    "API_TIMEOUT_MS": "<FILL_ME>",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "<FILL_ME>",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "<FILL_ME>",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "<FILL_ME>",
+    "MAX_THINKING_TOKENS": "<FILL_ME>",
+    "MAX_MCP_OUTPUT_TOKENS": "<FILL_ME>",
+    "DISABLE_ZOXIDE": "<FILL_ME>",
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "<FILL_ME>",
+    "CLAUDE_CODE_DISABLE_AUTO_MEMORY": "<FILL_ME>"
+  },
+  "permissions": {
+    "defaultMode": "dontAsk"
+  },
+  "model": "sonnet",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'FILE=\"$CLAUDE_FILE_PATH\"; case \"$FILE\" in *.env|*.env.*|.env|credentials*.json|secrets*.yaml|secrets*.yml) echo \"BLOCK: Editing sensitive file $FILE is not allowed\" >&2; exit 1;; *.lock|*-lock.json|bun.lock|package-lock.json|yarn.lock|pnpm-lock.yaml|Gemfile.lock) echo \"BLOCK: Use the package manager to update $FILE, not direct edits\" >&2; exit 1;; .git/*) echo \"BLOCK: Direct .git edits are not allowed\" >&2; exit 1;; esac'"
+          }
+        ]
+      },
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/home/bklo/.claude/hooks/sonar-secrets/build-scripts/pretool-secrets.sh'",
+            "timeout": 60
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "permission_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "which notify-send >/dev/null 2>&1 && notify-send 'Claude Code' 'Permission request — needs your input' || true"
+          }
+        ]
+      },
+      {
+        "matcher": "idle_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "which notify-send >/dev/null 2>&1 && notify-send 'Claude Code' 'Waiting for your input' || true"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/home/bklo/.claude/hooks/sonar-secrets/build-scripts/prompt-secrets.sh'",
+            "timeout": 60
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true,
+    "ralph-loop@claude-plugins-official": true,
+    "playwright@claude-plugins-official": true,
+    "security-guidance@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true,
+    "claude-code-setup@claude-plugins-official": true,
+    "explanatory-output-style@claude-plugins-official": true,
+    "prompt-improver@severity1-marketplace": true,
+    "sonarqube@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "voltagent-subagents": {
+      "source": {
+        "source": "github",
+        "repo": "VoltAgent/awesome-claude-code-subagents"
+      }
+    },
+    "severity1-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "severity1/severity1-marketplace"
+      }
+    }
+  },
+  "alwaysThinkingEnabled": true,
+  "autoDreamEnabled": true,
+  "skipDangerousModePermissionPrompt": true,
+  "skipWorkflowUsageWarning": true,
+  "theme": "dark-ansi",
+  "editorMode": "vim",
+  "verbose": true,
+  "teammateMode": "tmux",
+  "tui": "fullscreen"
+}

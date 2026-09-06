@@ -1,0 +1,158 @@
+# AeroSpace config — ported from yabai (~/.config/yabai/yabairc) + skhd (~/.config/skhd/skhdrc)
+# Guide: https://nikitabobko.github.io/AeroSpace/guide
+# Canonical location: ~/.aerospace.toml
+
+config-version = 2
+
+# --- Startup -------------------------------------------------------------
+# Launch AeroSpace automatically at login (yabai + skhd are disabled).
+start-at-login = false
+# Auto-reload on save (run one manual reload-config first to arm it).
+auto-reload-config = true
+after-startup-command = []
+
+# --- General behavior (mirrors yabai) ------------------------------------
+# yabai: mouse_follows_focus off, focus_follows_mouse off
+focus-follows-mouse.enabled = false
+
+# yabai: layout bsp  ->  AeroSpace 'tiles' is the binary-tree (bsp) layout
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+accordion-padding = 30
+
+# --- Workspaces ----------------------------------------------------------
+# AeroSpace workspaces are GLOBAL (shared across monitors), unlike yabai's
+# per-display spaces — so create_spaces.sh isn't needed. Persist the 6 you use.
+persistent-workspaces = ['1', '2', '3', '4', '5', '6']
+
+# --- Gaps & padding (mirrors yabai paddings + window_gap + external_bar) -
+[gaps]
+# yabai: window_gap 4
+inner.horizontal = 4
+inner.vertical   = 4
+# yabai: external_bar main:20:0  ->  20px reserved at top of the MAIN monitor
+# for sketchybar, 0 elsewhere (yabai top_padding 0)
+outer.top    = [{ monitor.main = 20 }, 0]
+outer.bottom = 4   # yabai: bottom_padding 4
+outer.left   = 4   # yabai: left_padding 4
+outer.right  = 4   # yabai: right_padding 4
+
+# --- App -> workspace assignment (mirrors yabai `rule app=... space=N`) ---
+# Legacy if.* keys are still fully supported (only soft-deprecated) and give
+# regex matching, which mirrors yabai's regex rules cleanly.
+[[on-window-detected]]
+if.app-name-regex-substring = '^Ghostty$'
+run = 'move-node-to-workspace 1'
+
+[[on-window-detected]]
+if.app-name-regex-substring = '^Zen$'
+run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
+if.app-name-regex-substring = '^Spotify$'
+run = 'move-node-to-workspace 3'
+
+[[on-window-detected]]
+if.app-name-regex-substring = '^Messages$'
+run = 'move-node-to-workspace 4'
+
+[[on-window-detected]]
+if.app-name-regex-substring = '^Reminders$'
+run = 'move-node-to-workspace 5'
+
+[[on-window-detected]]
+if.app-name-regex-substring = '^WeChat$'
+run = 'move-node-to-workspace 6'
+
+# --- Floating windows (mirrors yabai `rule ... manage=off`) --------------
+[[on-window-detected]]
+if.app-name-regex-substring = '^(LuLu|Calculator|Software Update|Dictionary|System Preferences|System Settings|Photo Booth|Archive Utility|Python|LibreOffice|App Store|Steam|Alfred|Stickies)$'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-name-regex-substring = '^System Information$'
+if.window-title-regex-substring = '^About This Mac$'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-name-regex-substring = '^Finder$'
+if.window-title-regex-substring = '(Co(py|nnect)|Move|Info|Pref)'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-name-regex-substring = '^Safari$'
+if.window-title-regex-substring = '^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|Advance)$'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-name-regex-substring = '^Inkscape$'
+if.window-title-regex-substring = '^Select file to save to$'
+run = 'layout floating'
+
+# --- Keybindings (ported from skhd -> yabai) -----------------------------
+# Modifier scheme preserved: alt = window ops, cmd+alt = workspace focus.
+[mode.main.binding]
+
+# Focus  (skhd: alt h/j/k/l -> yabai --focus west/south/north/east)
+alt-h = 'focus left'
+alt-j = 'focus down'
+alt-k = 'focus up'
+alt-l = 'focus right'
+
+# Swap  (skhd: shift+alt h/j/k/l -> yabai --swap)
+alt-shift-h = 'move left'
+alt-shift-j = 'move down'
+alt-shift-k = 'move up'
+alt-shift-l = 'move right'
+
+# Join / warp  (skhd: shift+cmd h/j/k/l -> yabai --warp)
+cmd-shift-h = 'join-with left'
+cmd-shift-j = 'join-with down'
+cmd-shift-k = 'join-with up'
+cmd-shift-l = 'join-with right'
+
+# Resize  (skhd: alt a/d = width, w/s = height)
+alt-a = 'resize width -50'
+alt-d = 'resize width +50'
+alt-w = 'resize height -50'
+alt-s = 'resize height +50'
+
+# Layout  (skhd: alt-e balance, alt-f zoom-fullscreen, alt-t float)
+alt-e = 'balance-sizes'
+alt-f = 'fullscreen'
+alt-t = 'layout floating tiling'
+# NOTE: alt-r (yabai --toggle split) has no direct AeroSpace equivalent; use
+# join-with / layout toggles to change split orientation.
+
+# Workspace focus  (skhd: cmd+alt 1..6, left/right, x)
+cmd-alt-1 = 'workspace 1'
+cmd-alt-2 = 'workspace 2'
+cmd-alt-3 = 'workspace 3'
+cmd-alt-4 = 'workspace 4'
+cmd-alt-5 = 'workspace 5'
+cmd-alt-6 = 'workspace 6'
+cmd-alt-left  = 'workspace prev'
+cmd-alt-right = 'workspace next'
+cmd-alt-x = 'workspace-back-and-forth'
+# NOTE: alt-n / alt-p (yabai --focus next/prev window) have no spatial
+# equivalent in AeroSpace — navigate with alt-h/j/k/l instead.
+
+# Move the focused window to a workspace  (useful complement; skhd had none)
+cmd-alt-shift-1 = 'move-node-to-workspace 1'
+cmd-alt-shift-2 = 'move-node-to-workspace 2'
+cmd-alt-shift-3 = 'move-node-to-workspace 3'
+cmd-alt-shift-4 = 'move-node-to-workspace 4'
+cmd-alt-shift-5 = 'move-node-to-workspace 5'
+cmd-alt-shift-6 = 'move-node-to-workspace 6'
+
+# Enter service mode (reload/reset layout). Esc exits back to main.
+alt-shift-semicolon = 'mode service'
+
+# --- Service mode (AeroSpace default helpers) ----------------------------
+[mode.service.binding]
+esc = ['reload-config', 'mode main']
+r = ['flatten-workspace-tree', 'mode main']     # reset layout
+f = ['layout floating tiling', 'mode main']     # toggle float
+backspace = ['close-all-windows-but-current', 'mode main']

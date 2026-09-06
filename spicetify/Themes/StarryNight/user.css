@@ -6,9 +6,12 @@
   background-color: #00000000 !important;
 }
 
+.main-actionBarBackground-background {
+  background-color: #00000000 !important;
+}
+
 .main-home-homeHeader {
   background-color: #00000000 !important;
-  background-image: none !important;
 }
 
 .Root__top-container {
@@ -17,7 +20,6 @@
   grid-template-areas:
     "left-sidebar    main-view         now-playing-bar"
     "left-sidebar    main-view         right-sidebar";
-  grid-template-rows: auto auto 1fr;
 }
 
 .global-nav .Root__top-container {
@@ -25,42 +27,11 @@
     "global-nav global-nav global-nav"
     "left-sidebar main-view now-playing-bar"
     "left-sidebar main-view right-sidebar" !important;
-}
-
-.Root__globalNav {
-  background-color: #00000000 !important;
-}
-
-.ffFwfKcPDbmAPLXzxzKq:before {
-  background-color: #00000000 !important;
-}
-
-.I0bVSxvqA3rm5HvciMap {
-  --bgColor: #00000000 !important;
-}
-
-.I0bVSxvqA3rm5HvciMap::after {
-  --bgColor: #00000000 !important;
-}
-
-.PeLrpasyfBW8ql_bmoAi {
-  background-color: #00000000 !important;
-  background-image: none !important;
-}
-
-.PkOz5g82CaoKk1J3GX0e  {
-  background-color: #00000000 !important;
-  background-image: none !important;
-}
-
-.sv5suqIPUwjgUF_BzM41 {
-  transform: none !important;
+  grid-template-rows: auto 1fr 1fr;
 }
 
 .Root__right-sidebar {
   width: min-content;
-  height: auto !important;
-  min-height: 100% !important;
 }
 
 .Root__now-playing-bar {
@@ -104,19 +75,15 @@
 }
 
 .main-actionBarBackground-background {
-  background-image: none;
-  background-color: #00000000 !important;
+  background-image: linear-gradient(rgba(var(--spice-rgb-shadow), .6) 0, #000000 100%), #00000000 !important;
   animation: none !important;
   -webkit-animation: none !important;
 }
 
-.main-entityHeader-overlay {
-  background: none !important;
-}
-
-.main-entityHeader-background.main-entityHeader-gradient {
-  opacity: 0.5;
+.main-entityHeader-background.main-entityHeader-overlay {
+  background-image: none !important;
   animation: none !important;
+  -webkit-animation: none !important;
 }
 
 .main-entityHeader-background.main-entityHeader-overlay:after {
@@ -126,7 +93,7 @@
 }
 
 .pUNc2aOeOQANHrhYa1GU .RDZ61ETnag1ilfZTkVxe {
-  color: #00000000 !important;
+  color: #000000 !important;
 }
 
 .playlist-playlist-playlistContent {
@@ -153,6 +120,10 @@
 
 .Root__main-view {
   background-color: #00000000 !important;
+}
+
+.main-home-homeHeader {
+  background-image: linear-gradient(rgba(var(--spice-rgb-shadow), .6) 0, #00000000 100%), var(--background-noise);
 }
 
 .main-nowPlayingBar-center {
@@ -388,7 +359,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   height: 4px;
   background: var(--spice-shooting-star);
   border-radius: 50%;
-  animation: animate 3s linear;
+  animation: animate 3s linear infinite;
   left: initial;
   z-index: -1;
 }

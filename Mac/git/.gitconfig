@@ -1,0 +1,37 @@
+[user]
+	name = Brandon Lo
+	email = 11641062+bklo94@users.noreply.github.com
+	signingkey = 9431566075198D1B
+[commit]
+	gpgsign = true
+[tag]
+	gpgsign = true
+	forceSignAnnotated = true
+[gpg]
+	program = gpg
+[gpg "ssh"]
+	allowedSignersFile = /Users/bklo/.ssh/allowed_signers
+[init]
+	defaultBranch = main
+[fetch]
+	prune = true
+[pull]
+	rebase = true
+[push]
+	autoSetupRemote = true
+[rebase]
+	autoSquash = true
+[core]
+	excludesfile = /Users/bklo/.gitignore_global
+	pager = delta
+	editor = nvim
+[interactive]
+	diffFilter = delta --color-only
+[merge]
+	conflictstyle = zdiff3
+[delta]
+	navigate = true
+	side-by-side = true
+	line-numbers = true
+[credential]
+	helper = osxkeychain
